@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>regist</title>
+</head>
+<body>
+<h1>신규 사원 입력</h1>
+<form action="/emp/regist" method="post">
+    <label>사원이름 : </label><input type="text" name="empName"><br>
+    <label>주민등록번호</label><br>
+    <input type="number" name="empNo1"> <input type="number" name="empNo2"><br>
+    <label>이메일</label> <input type="text" name="email"><br>
+    <label>핸드폰번호</label> <input type="text" name="phone"><br>
+    <label>부서</label>
+    <select name="deptCode" id="dept"></select><br>
+    <label>직급</label>
+    <select name="jobCode" id="job"></select><br>
+    <label>급여등급</label>
+    <select name="salLevel" id="sal"></select><br>
+    <label>급여</label> <input type="text" name="salary"><br>
+    <label>보너스</label> <input type="text" name="bonus"><br>
+    <label>관리자ID</label>
+    <select name="managerId" id="managerId"></select><br>
+    <input type="submit">
+</form>
+
+<script>
+    fetch("/emp/dept")
+        .then(res => res.json())
+        .then(data => {
+            const $deptElement = document.querySelector("#dept");
+
+            data.forEach(dept => {
+                //console.log(data);
+                const $option = document.createElement("option");
+                $option.value = dept.deptId;
+                $option.textContent = dept.deptTitle;
+                $deptElement.appendChild($option);
+            })
+        })
+    fetch("/emp/job")
+        .then(res => res.json())
+        .then(data => {
+            const $jobElement = document.querySelector("#job");
+
+            data.forEach(job => {
+                //console.log(data);
+                const $option = document.createElement("option");
+                $option.value = job.jobCode;
+                $option.textContent = job.jobName;
+                $jobElement.appendChild($option);
+            })
+        })
+
+    fetch("/emp/sal")
+        .then(res => res.json())
+        .then(data => {
+            const $salElement = document.querySelector("#sal");
+
+            data.forEach(sal => {
+                //console.log(data);
+                const $option = document.createElement("option");
+                $option.value = sal.salLevel;
+                $option.textContent = `${sal.minSal} ~ ${sal.maxSal}`;
+                $salElement.appendChild($option);
+            })
+        })
+
+    fetch("/emp/managerId")
+        .then(res => res.json())
+        .then(data => {
+            const $salElement = document.querySelector("#managerId");
+
+            data.forEach(item => {
+                console.log(item);
+                const $option = document.createElement("option");
+                $option.value = item
+                $option.textContent = item ? item:'없음';
+                $salElement.appendChild($option);
+            })
+        })
+</script>
+</body>
+</html>
